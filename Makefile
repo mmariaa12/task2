@@ -1,14 +1,20 @@
-all: main.o Vector3d.o
-	g++ -o task2 main.o Vector3d.o
+CFLAG = -std=c++98 -Wall -Wextra
 
-main.o: main.cpp Vector3d.hpp
-	g++ -c main.cpp
+all: main.o Vector3d.o Particle.o
+	g++ -o task2 main.o Vector3d.o Particle.o
+
+main.o: main.cpp Vector3d.hpp Particle.hpp
+	g++ $(CFLAG) -c main.cpp
 
 Vector3d.o: Vector3d.cpp Vector3d.hpp
-	g++ -c Vector3d.cpp
+	g++ $(CFLAG) -c Vector3d.cpp
+
+Particle.o: Particle.cpp Vector3d.hpp Particle.hpp
+	g++ $(CFLAG) -c Particle.cpp
 
 clean:
 	rm -rfv *.o task2
 
 fmt:
-	clang-format -i --verbose *.[ch]pp -style="{IndentWidth: 4, AccessModifierOffset: -4}"
+	clang-format -i --verbose *.[ch]pp \
+	-style="{IndentWidth: 4, AccessModifierOffset: -4}"

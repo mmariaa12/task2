@@ -1,5 +1,7 @@
 #include "Vector3d.hpp"
 
+#include <cmath>
+
 Vector3d::Vector3d() {
     for (int i = 0; i < 3; ++i) {
         (*this)[i] = 0;
