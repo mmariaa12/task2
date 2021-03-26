@@ -1,5 +1,6 @@
 #include "Vector3d.hpp"
 
+#include <cassert>
 #include <cmath>
 
 #ifndef EPS
@@ -24,9 +25,17 @@ Vector3d::Vector3d(const Vector3d &v) {
     }
 }
 
-double &Vector3d::operator[](int i) { return this->x[i]; }
+double &Vector3d::operator[](int i) {
+    assert(0 <= i && i < 3);
 
-double Vector3d::operator[](int i) const { return this->x[i]; }
+    return this->x[i];
+}
+
+double Vector3d::operator[](int i) const {
+    assert(0 <= i && i < 3);
+
+    return this->x[i];
+}
 
 Vector3d &Vector3d::operator=(const Vector3d &v) {
     for (int i = 0; i < 3; ++i) {
@@ -61,6 +70,8 @@ Vector3d &Vector3d::operator*=(double k) {
 }
 
 Vector3d &Vector3d::operator/=(double k) {
+    assert(fabs(k) >= EPS);
+
     for (int i = 0; i < 3; ++i) {
         (*this)[i] /= k;
     }
@@ -113,6 +124,8 @@ Vector3d operator*(const Vector3d &v, double k) { return k * v; }
 
 Vector3d operator/(const Vector3d &v, double k) {
     Vector3d out;
+
+    assert(fabs(k) >= EPS);
 
     for (int i = 0; i < 3; ++i) {
         out[i] = v[i] / k;

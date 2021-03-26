@@ -1,5 +1,6 @@
 #include "Particle.hpp"
 
+#include <cassert>
 #include <cmath>
 
 #ifndef EPS
@@ -12,7 +13,9 @@
 Particle::Particle(void) : x(), v(), f(), m(0), q(0), t(0) {}
 
 Particle::Particle(Vector3d x, Vector3d v, double m, double q, double t)
-    : x(x), v(v), f(Vector3d()), m(m), q(q), t(t) {}
+    : x(x), v(v), f(Vector3d()), m(m), q(q), t(t) {
+    assert(m >= 0 && q >= 0 && t >= 0);
+}
 
 Particle::Particle(const Particle &p)
     : x(p.x), v(p.v), f(p.f), m(p.m), q(p.q), t(p.t) {}
@@ -36,6 +39,8 @@ Vector3d Particle::force(const Particle &dest, const Particle &src) {
     direction = dest.x - src.x;
     direction_square = direction.square();
 
+    assert(fabs(direction_square) >= EPS);
+
     gravitational_magnitude =
         KGRAVITATIONAL * dest.m * src.m / direction_square;
     coulomb_magnitude = KCOULOMB * dest.q * src.q / direction_square;
@@ -53,6 +58,8 @@ Particle &Particle::collide_in_place(const Particle &p) {
     double m, this_v_square;
 
     m = this->m + p.m;
+
+    assert(fabs(m) >= EPS);
 
     this->x = (this->m * this->x + p.m * p.x) / m;
     this->q += p.q;
@@ -77,6 +84,8 @@ Particle &Particle::set_force(const Vector3d &f) {
 }
 
 Particle &Particle::update_in_place(double dt) {
+    assert(fabs(this->m) >= EPS);
+
     this->x += dt * this->v;
     this->v += dt / this->m * this->f;
 

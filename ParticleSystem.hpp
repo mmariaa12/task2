@@ -11,8 +11,8 @@ public:
     ~ParticleSystem(void);
 
     ParticleSystem &particle_realloc(size_t i);
-    ParticleSystem &particle_realloc(size_t i, Vector3d x, Vector3d v,
-                                     Vector3d f, double m, double q, double t);
+    ParticleSystem &particle_realloc(size_t i, Vector3d x, Vector3d v, double m,
+                                     double q, double t);
     ParticleSystem &particle_realloc(size_t i, const Particle &p);
 
     Particle &operator[](size_t i);

@@ -8,7 +8,7 @@ ParticleSystem::ParticleSystem(size_t n) {
     this->ps = new Particle *[n];
 
     for (size_t i = 0; i < n; ++i) {
-        this->ps[i] = nullptr;
+        this->ps[i] = NULL;
     }
 
     this->n = n;
@@ -16,7 +16,7 @@ ParticleSystem::ParticleSystem(size_t n) {
 
 ParticleSystem::~ParticleSystem(void) {
     for (size_t i = 0; i < this->n; ++i) {
-        if (this->ps[i] != nullptr) {
+        if (this->ps[i] != NULL) {
             delete this->ps[i];
         }
     }
@@ -27,7 +27,7 @@ ParticleSystem::~ParticleSystem(void) {
 ParticleSystem &ParticleSystem::particle_realloc(size_t i) {
     assert(i < this->n);
 
-    if (this->ps[i] != nullptr) {
+    if (this->ps[i] != NULL) {
         delete this->ps[i];
     }
 
@@ -37,11 +37,11 @@ ParticleSystem &ParticleSystem::particle_realloc(size_t i) {
 }
 
 ParticleSystem &ParticleSystem::particle_realloc(size_t i, Vector3d x,
-                                                 Vector3d v, Vector3d f,
-                                                 double m, double q, double t) {
+                                                 Vector3d v, double m, double q,
+                                                 double t) {
     assert(i < this->n);
 
-    if (this->ps[i] != nullptr) {
+    if (this->ps[i] != NULL) {
         delete this->ps[i];
     }
 
@@ -53,7 +53,7 @@ ParticleSystem &ParticleSystem::particle_realloc(size_t i, Vector3d x,
 ParticleSystem &ParticleSystem::particle_realloc(size_t i, const Particle &p) {
     assert(i < this->n);
 
-    if (this->ps[i] != nullptr) {
+    if (this->ps[i] != NULL) {
         delete this->ps[i];
     }
 
@@ -64,14 +64,14 @@ ParticleSystem &ParticleSystem::particle_realloc(size_t i, const Particle &p) {
 
 Particle &ParticleSystem::operator[](size_t i) {
     assert(i < this->n);
-    assert(this->ps[i] != nullptr);
+    assert(this->ps[i] != NULL);
 
     return *this->ps[i];
 }
 
 const Particle &ParticleSystem::operator[](size_t i) const {
     assert(i < this->n);
-    assert(this->ps[i] != nullptr);
+    assert(this->ps[i] != NULL);
 
     return *this->ps[i];
 }

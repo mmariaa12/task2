@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "Particle.hpp"
+#include "ParticleSystem.hpp"
 
 #define KCOULOMB 8.9e+9
 #define KGRAVITATIONAL 6.6e-11
@@ -30,7 +30,7 @@ bool test1(void) {
 }
 
 bool test2(void) {
-    Particle *ps = new Particle[10];
+    Particle ps[10];
     double pi = acos(-1);
     double angle;
 
@@ -51,4 +51,18 @@ bool test2(void) {
     return true;
 }
 
-int main(void) { std::cout << test1() << ' ' << test2() << std::endl; }
+bool test3(void) {
+    ParticleSystem ps(10);
+
+    ps.particle_realloc(1, Vector3d(1, 1, 1), Vector3d(2, 2, 2), 3, 4, 5);
+    ps[1].set_force(Vector3d(6, 6, 6));
+
+    std::cout << ps[1] << std::endl;
+
+    ps.particle_realloc(1);
+    std::cout << ps[1] << std::endl;
+
+    return true;
+}
+
+int main(void) { std::cout << test3() << std::endl; }
