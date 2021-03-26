@@ -6,42 +6,49 @@
 #define KCOULOMB 8.9e+9
 #define KGRAVITATIONAL 6.6e-11
 
-int main(void) {
-    {
-        Particle p1;
-        Particle p2;
+bool test1(void) {
 
-        p1 = Particle(Vector3d(1, 0, 0), Vector3d(0, 0, 0), Vector3d(0, 0, 0),
-                      1 / KGRAVITATIONAL, 1, 0);
+    Particle p1;
+    Particle p2;
 
-        p2 = Particle(Vector3d(0, 0, 0), Vector3d(0, 0, 0), Vector3d(0, 0, 0),
-                      1, 1 / KCOULOMB, 0);
+    p1 = Particle(Vector3d(1, 0, 0), Vector3d(0, 0, 0), 1 / KGRAVITATIONAL, 1,
+                  0);
 
-        std::cout << p1 << '\n'
-                  << p2 << '\n'
-                  << Particle::force(p1, p2) << std::endl;
+    p2 = Particle(Vector3d(0, 0, 0), Vector3d(0, 0, 0), 1, 1 / KCOULOMB, 0);
 
-        std::cout << Particle::detect_collision(p1, p2, 1 / 2) << '\n'
-                  << Particle::detect_collision(p1, p2, 1) << '\n'
-                  << Particle::detect_collision(p1, p2, 2) << std::endl;
+    if (Particle::force(p1, p2) != Vector3d(2, 0, 0)) {
+        return false;
     }
 
-    {
-        Particle *pss = new Particle[10];
-        double pi = acos(-1);
-        double angle;
-
-        for (int i = 0; i < 10; ++i) {
-            angle = 2 * pi * i / 10;
-            pss[i] = Particle(Vector3d(cos(angle), sin(angle), 0),
-                              Vector3d(0, 0, 0), Vector3d(0, 0, 0), 1, 1, 1);
-            std::cout << pss[i] << std::endl;
-        }
-
-        for (int i = 1; i < 10; ++i) {
-            pss[0].collide_in_place(pss[i]);
-        }
-
-        std::cout << pss[0] << std::endl;
+    if (Particle::detect_collision(p1, p2, 1 / 2) != false ||
+        Particle::detect_collision(p1, p2, 1) != false ||
+        Particle::detect_collision(p1, p2, 2) != true) {
+        return false;
     }
+
+    return true;
 }
+
+bool test2(void) {
+    Particle *ps = new Particle[10];
+    double pi = acos(-1);
+    double angle;
+
+    for (int i = 0; i < 10; ++i) {
+        angle = 2 * pi * i / 10;
+        ps[i] = Particle(Vector3d(cos(angle), sin(angle), 0), Vector3d(1, 1, 1),
+                         1, 1, 1);
+    }
+
+    for (int i = 1; i < 10; ++i) {
+        ps[0].collide_in_place(ps[i]);
+    }
+
+    if (ps[0] != Particle(Vector3d(0, 0, 0), Vector3d(0, 0, 0), 10, 10, 1)) {
+        return false;
+    }
+
+    return true;
+}
+
+int main(void) { std::cout << test1() << ' ' << test2() << std::endl; }

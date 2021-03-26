@@ -8,7 +8,7 @@
 class Particle {
 public:
     Particle(void);
-    Particle(Vector3d x, Vector3d v, Vector3d f, double m, double q, double t);
+    Particle(Vector3d x, Vector3d v, double m, double q, double t);
     Particle(const Particle &p);
 
     Particle &operator=(const Particle &p);
@@ -19,11 +19,17 @@ public:
 
     Particle &collide_in_place(const Particle &p);
 
-private:
-    friend std::ostream &operator<<(std::ostream &os, const Particle &p);
+    Particle &set_force(const Vector3d &f);
+    Particle &update_in_place(double dt);
 
+private:
     Vector3d x, v, f;
     double m, q, t;
+
+    friend std::ostream &operator<<(std::ostream &os, const Particle &p);
+
+    friend bool operator==(const Particle &p1, const Particle &p2);
+    friend bool operator!=(const Particle &p1, const Particle &p2);
 };
 
 #endif

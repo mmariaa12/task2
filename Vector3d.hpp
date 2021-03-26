@@ -38,6 +38,9 @@ private:
     friend Vector3d operator/(const Vector3d &v, double k);
 
     friend double dot_product(const Vector3d &v, const Vector3d &u);
+
+    friend bool operator==(const Vector3d &v, const Vector3d &u);
+    friend bool operator!=(const Vector3d &v, const Vector3d &u);
 };
 
 #endif

@@ -2,7 +2,11 @@
 
 #include <cmath>
 
-Vector3d::Vector3d() {
+#ifndef EPS
+#define EPS 1e-9
+#endif
+
+Vector3d::Vector3d(void) {
     for (int i = 0; i < 3; ++i) {
         (*this)[i] = 0;
     }
@@ -125,3 +129,9 @@ double dot_product(const Vector3d &v, const Vector3d &u) {
     }
     return sum;
 }
+
+bool operator==(const Vector3d &v, const Vector3d &u) {
+    return (v - u).square() < EPS;
+}
+
+bool operator!=(const Vector3d &v, const Vector3d &u) { return !(v == u); }
