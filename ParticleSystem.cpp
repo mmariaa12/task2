@@ -45,7 +45,7 @@ ParticleSystem &ParticleSystem::particle_realloc(size_t i, Vector3d x,
         delete this->ps[i];
     }
 
-    this->ps[i] = new Particle(x, v, f, m, q, t);
+    this->ps[i] = new Particle(x, v, m, q, t);
 
     return *this;
 }
