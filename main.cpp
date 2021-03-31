@@ -1,4 +1,7 @@
+#include <cassert>
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 #include "ParticleSystem.hpp"
@@ -30,9 +33,8 @@ bool test1(void) {
 }
 
 bool test2(void) {
-    Particle ps[10];
-    double pi = acos(-1);
-    double angle;
+    ParticleSystem ps(10);
+    double pi = acos(-1), angle;
 
     for (int i = 0; i < 10; ++i) {
         angle = 2 * pi * i / 10;
@@ -40,29 +42,63 @@ bool test2(void) {
                          1, 1, 1);
     }
 
-    for (int i = 1; i < 10; ++i) {
-        ps[0].collide_in_place(ps[i]);
+    ps.detect_and_collide(2);
+
+    if (ps.get_n() != 1) {
+        return false;
     }
 
-    if (ps[0] != Particle(Vector3d(0, 0, 0), Vector3d(0, 0, 0), 10, 10, 1)) {
+    if (ps[0] != Particle(Vector3d(0, 0, 0), Vector3d(1, 1, 1), 10, 10, 1)) {
         return false;
     }
 
     return true;
 }
 
-bool test3(void) {
-    ParticleSystem ps(10);
-
-    ps.particle_realloc(1, Vector3d(1, 1, 1), Vector3d(2, 2, 2), 3, 4, 5);
-    ps[1].set_force(Vector3d(6, 6, 6));
-
-    std::cout << ps[1] << std::endl;
-
-    ps.particle_realloc(1);
-    std::cout << ps[1] << std::endl;
-
-    return true;
+void generate_random_system(ParticleSystem &ps) {
+    for (size_t i = 0; i < ps.get_n(); ++i) {
+        Vector3d x(rand() % 100, rand() % 100, rand() % 100);
+        Vector3d v(rand() % 100, rand() % 100, rand() % 100);
+        double m = rand() % 100 + 1;
+        double q = rand() % 100 + 1;
+        double t = rand() % 100 + 1;
+        ps[i] = Particle(x, v, m, q, t);
+    }
 }
 
-int main(void) { std::cout << test3() << std::endl; }
+int main(int argc, char **argv) {
+#ifndef NDEBUG
+    assert(test1() && test2());
+#endif
+
+    if (argc < 5) {
+        std::cerr << "Bad args" << std::endl;
+        std::cerr << "Usage:\n" << argv[0] << " dt l n k" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    double dt, l;
+    int n, k;
+
+    dt = atof(argv[1]);
+    l = atof(argv[2]);
+    n = atoi(argv[3]);
+    k = atoi(argv[4]);
+
+    ParticleSystem ps(n);
+
+    srand(time(NULL));
+    generate_random_system(ps);
+
+    for (int i = 0; i < k; ++i) {
+        std::cout << "Time passed: " << i * dt << std::endl;
+        std::cout << "System: " << ps << std::endl;
+
+        ps.detect_and_collide(l);
+        ps.set_forces();
+        ps.update(dt);
+    }
+
+    std::cout << "Time passed: " << k * dt << std::endl;
+    std::cout << "System: " << ps << std::endl;
+}

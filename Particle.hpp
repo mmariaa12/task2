@@ -27,6 +27,8 @@ private:
     double m, q, t;
 
     friend std::ostream &operator<<(std::ostream &os, const Particle &p);
+    friend std::ostream &operator<<(std::ostream &os,
+                                    const class ParticleSystem &ps);
 
     friend bool operator==(const Particle &p1, const Particle &p2);
     friend bool operator!=(const Particle &p1, const Particle &p2);

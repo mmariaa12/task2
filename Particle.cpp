@@ -39,7 +39,7 @@ Vector3d Particle::force(const Particle &dest, const Particle &src) {
     direction = dest.x - src.x;
     direction_square = direction.square();
 
-    assert(fabs(direction_square) >= EPS);
+    assert(fabs(direction_square) > EPS);
 
     gravitational_magnitude =
         KGRAVITATIONAL * dest.m * src.m / direction_square;
@@ -59,7 +59,7 @@ Particle &Particle::collide_in_place(const Particle &p) {
 
     m = this->m + p.m;
 
-    assert(fabs(m) >= EPS);
+    assert(fabs(m) > EPS);
 
     this->x = (this->m * this->x + p.m * p.x) / m;
     this->q += p.q;
@@ -84,7 +84,7 @@ Particle &Particle::set_force(const Vector3d &f) {
 }
 
 Particle &Particle::update_in_place(double dt) {
-    assert(fabs(this->m) >= EPS);
+    assert(fabs(this->m) > EPS);
 
     this->x += dt * this->v;
     this->v += dt / this->m * this->f;

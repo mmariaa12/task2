@@ -10,17 +10,20 @@ public:
     ParticleSystem(size_t n);
     ~ParticleSystem(void);
 
-    ParticleSystem &particle_realloc(size_t i);
-    ParticleSystem &particle_realloc(size_t i, Vector3d x, Vector3d v, double m,
-                                     double q, double t);
-    ParticleSystem &particle_realloc(size_t i, const Particle &p);
-
     Particle &operator[](size_t i);
     const Particle &operator[](size_t i) const;
+
+    size_t get_n(void) const;
+
+    ParticleSystem &detect_and_collide(double l);
+    ParticleSystem &set_forces(void);
+    ParticleSystem &update(double dt);
 
 private:
     Particle **ps;
     size_t n;
+
+    friend std::ostream &operator<<(std::ostream &os, const ParticleSystem &ps);
 };
 
 #endif
