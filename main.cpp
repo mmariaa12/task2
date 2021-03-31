@@ -67,9 +67,7 @@ void generate_random_system(ParticleSystem &ps) {
 }
 
 int main(int argc, char **argv) {
-#ifndef NDEBUG
     assert(test1() && test2());
-#endif
 
     if (argc < 5) {
         std::cerr << "Bad args" << std::endl;
